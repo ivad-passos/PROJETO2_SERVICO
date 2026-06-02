@@ -1,0 +1,9 @@
+{
+  "name": "robo_lab",
+  "type": "mysql",
+  "url": "localhost:3306",
+  "database": "robo_lab",
+  "user": "root",
+  "access": "proxy",
+  "isDefault": true
+}

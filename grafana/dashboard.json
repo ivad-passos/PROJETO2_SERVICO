@@ -1,0 +1,81 @@
+{
+  "title": "Robo Lab - Pintura de Blocos",
+  "refresh": "5s",
+  "time": { "from": "now-30m", "to": "now" },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Nivel de Tinta (%)",
+      "type": "gauge",
+      "gridPos": { "x": 0, "y": 0, "w": 6, "h": 8 },
+      "datasource": { "type": "mysql", "uid": "${DS_ROBO_LAB}" },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "minVizWidth": 75,
+        "minVizHeight": 75,
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0, "max": 100, "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        }
+      },
+      "targets": [{ "rawSql": "SELECT NOW() as time, nivel_tinta as value FROM leituras ORDER BY timestamp DESC LIMIT 1", "format": "table", "refId": "A" }]
+    },
+    {
+      "id": 2,
+      "title": "Nivel de Tinta ao longo do tempo",
+      "type": "timeseries",
+      "gridPos": { "x": 6, "y": 0, "w": 18, "h": 8 },
+      "datasource": { "type": "mysql", "uid": "${DS_ROBO_LAB}" },
+      "fieldConfig": { "defaults": { "unit": "percent", "color": { "mode": "palette-classic" } } },
+      "targets": [{ "rawSql": "SELECT timestamp as time, nivel_tinta as \"Nivel Tinta\" FROM leituras ORDER BY timestamp", "format": "time_series", "refId": "A" }]
+    },
+    {
+      "id": 3,
+      "title": "Temperatura (C)",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 8, "w": 12, "h": 8 },
+      "datasource": { "type": "mysql", "uid": "${DS_ROBO_LAB}" },
+      "fieldConfig": { "defaults": { "unit": "celsius", "color": { "mode": "palette-classic" } } },
+      "targets": [{ "rawSql": "SELECT timestamp as time, temperatura as \"Temperatura\" FROM leituras ORDER BY timestamp", "format": "time_series", "refId": "A" }]
+    },
+    {
+      "id": 4,
+      "title": "Umidade (%)",
+      "type": "timeseries",
+      "gridPos": { "x": 12, "y": 8, "w": 12, "h": 8 },
+      "datasource": { "type": "mysql", "uid": "${DS_ROBO_LAB}" },
+      "fieldConfig": { "defaults": { "unit": "humidity", "color": { "mode": "palette-classic" } } },
+      "targets": [{ "rawSql": "SELECT timestamp as time, umidade as \"Umidade\" FROM leituras ORDER BY timestamp", "format": "time_series", "refId": "A" }]
+    },
+    {
+      "id": 5,
+      "title": "Luminosidade",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 16, "w": 12, "h": 8 },
+      "datasource": { "type": "mysql", "uid": "${DS_ROBO_LAB}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" } } },
+      "targets": [{ "rawSql": "SELECT timestamp as time, luminosidade as \"Luminosidade\" FROM leituras ORDER BY timestamp", "format": "time_series", "refId": "A" }]
+    },
+    {
+      "id": 6,
+      "title": "Presenca",
+      "type": "timeseries",
+      "gridPos": { "x": 12, "y": 16, "w": 12, "h": 8 },
+      "datasource": { "type": "mysql", "uid": "${DS_ROBO_LAB}" },
+      "fieldConfig": { "defaults": { "min": 0, "max": 1, "color": { "mode": "palette-classic" } } },
+      "targets": [{ "rawSql": "SELECT timestamp as time, presenca as \"Presenca\" FROM leituras ORDER BY timestamp", "format": "time_series", "refId": "A" }]
+    }
+  ]
+}
